@@ -10,10 +10,9 @@
   "profiles": {
     "OAuth2Client": {
       "commandName": "Project",
-      "launchBrowser": true,
       "applicationUrl": "https://localhost:7276;http://localhost:5101",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_ENVIRONMENT": "local",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       }
     },
