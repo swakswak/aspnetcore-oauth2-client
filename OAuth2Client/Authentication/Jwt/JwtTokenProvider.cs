@@ -13,7 +13,7 @@ public class JwtTokenProvider : ITokenProvider
     {
         Logger = logger;
         Options = customJwtOptions.Value;
-        SecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Options.Key));
+        SecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Options.SecretKey));
     }
 
     private ILogger Logger { get; }

@@ -15,7 +15,7 @@ internal static class TestServiceFactory
         new()
         {
             Issuer = "Issuer",
-            Key = "my-jwt-token-secret-key-example",
+            SecretKey = "my-jwt-token-secret-key-example",
             ExpirationMinutes = 30,
             Audience = "MyServiceUser"
         };

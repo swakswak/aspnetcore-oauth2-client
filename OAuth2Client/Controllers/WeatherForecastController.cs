@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace OAuth2Client.Controllers;
 
@@ -19,8 +21,10 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "User")]
     public IEnumerable<WeatherForecast> Get()
     {
+        _logger.LogInformation("[Get]");
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),

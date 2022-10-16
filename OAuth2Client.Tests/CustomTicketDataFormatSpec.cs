@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Moq;
+using OAuth2Client.Authentication.Cookie;
 using OAuth2Client.Authentication.OAuth;
 
 namespace OAuth2Client.Tests;
