@@ -63,5 +63,11 @@ public class KakaoOAuthOptions : IConfigureNamedOptions<OAuthOptions>
 
             context.RunClaimActions(parsed.RootElement);
         };
+
+        options.Events.OnTicketReceived = context =>
+        {
+            context.ReturnUri = context.ReturnUri == "/auth/challenge" ? "/" : context.ReturnUri;
+            return Task.CompletedTask;
+        };
     }
 }

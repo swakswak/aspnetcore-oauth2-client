@@ -1,10 +1,20 @@
 import React, {Component} from 'react';
 
+async function verifyAuth() {
+    fetch("auth/verification")
+        .then(res => {
+            if (res.status === 401) {
+                window.location.href = "auth/challenge";
+            }
+        })
+}
+
 export class Home extends Component {
     static displayName = Home.name;
 
     constructor() {
         super();
+        verifyAuth();
         this.state = {
             nickname: ""
         }

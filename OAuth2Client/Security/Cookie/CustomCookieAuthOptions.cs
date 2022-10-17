@@ -33,12 +33,10 @@ public class CustomCookieAuthOptions : IConfigureNamedOptions<CookieAuthenticati
             return Task.CompletedTask;
         };
         
-        options.Events.OnRedirectToLogin = async context =>
+        options.Events.OnRedirectToLogin = context =>
         {
-            // context.RedirectUri = "/weatherforecast";
-            // context.Response.StatusCode = 401;
-            // context.RedirectUri = "/auth/challenge";
-            await context.HttpContext.ChallengeAsync(KakaoOAuthDefaults.AuthenticationScheme);
+            context.Response.StatusCode = 401;
+            return Task.CompletedTask;
         };
     }
 }

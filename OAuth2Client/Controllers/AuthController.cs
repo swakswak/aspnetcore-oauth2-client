@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using OAuth2Client.Security.OAuth;
 
 namespace OAuth2Client.Controllers;
@@ -26,9 +28,17 @@ public class AuthController : ControllerBase
 
     [HttpGet]
     [Route("logout")]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "User")]
     public async Task Logout()
     {
         await HttpContext.SignOutAsync();
         HttpContext.Response.Redirect(Url.Content("~/"));
+    }
+
+    [HttpGet("verification")]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "User")]
+    public void Verification()
+    {
+        Logger.LogInformation("[Verification] verified.");
     }
 }
