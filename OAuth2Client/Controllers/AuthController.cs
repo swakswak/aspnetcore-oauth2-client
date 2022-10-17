@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OAuth2Client.Authentication.OAuth;
+using OAuth2Client.Security.OAuth;
 
 namespace OAuth2Client.Controllers;
 
@@ -22,5 +22,13 @@ public class AuthController : ControllerBase
     {
         Logger.LogInformation("[ChallengeAsync]");
         await HttpContext.ChallengeAsync(KakaoOAuthDefaults.AuthenticationScheme);
+    }
+
+    [HttpGet]
+    [Route("logout")]
+    public async Task Logout()
+    {
+        await HttpContext.SignOutAsync();
+        HttpContext.Response.Redirect(Url.Content("~/"));
     }
 }

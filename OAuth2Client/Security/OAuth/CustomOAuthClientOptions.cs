@@ -1,4 +1,4 @@
-namespace OAuth2Client.Authentication.OAuth;
+namespace OAuth2Client.Security.OAuth;
 
 public class CustomOAuthClientOptions
 {

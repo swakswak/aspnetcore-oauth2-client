@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Options;
 
-namespace OAuth2Client.Authentication.OAuth;
+namespace OAuth2Client.Security.OAuth;
 
 public class KakaoOAuthOptions : IConfigureNamedOptions<OAuthOptions>
 {

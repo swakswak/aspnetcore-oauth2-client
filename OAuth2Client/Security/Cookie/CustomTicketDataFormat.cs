@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
-namespace OAuth2Client.Authentication.Cookie;
+namespace OAuth2Client.Security.Cookie;
 
 public class CustomTicketDataFormat : ISecureDataFormat<AuthenticationTicket>
 {

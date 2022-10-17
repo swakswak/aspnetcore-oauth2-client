@@ -1,7 +1,6 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace OAuth2Client.Authentication;
+namespace OAuth2Client.Security;
 
 public interface ITokenProvider
 {

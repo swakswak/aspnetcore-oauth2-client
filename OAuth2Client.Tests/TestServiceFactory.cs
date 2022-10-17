@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using OAuth2Client.Authentication;
-using OAuth2Client.Authentication.Jwt;
+using OAuth2Client.Security;
+using OAuth2Client.Security.Jwt;
 
 namespace OAuth2Client.Tests;
 

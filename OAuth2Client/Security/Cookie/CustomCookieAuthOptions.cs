@@ -1,14 +1,10 @@
-using System.Net;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
-using OAuth2Client.Authentication.Jwt;
-using OAuth2Client.Authentication.OAuth;
+using OAuth2Client.Security.Jwt;
+using OAuth2Client.Security.OAuth;
 
-namespace OAuth2Client.Authentication.Cookie;
+namespace OAuth2Client.Security.Cookie;
 
 public class CustomCookieAuthOptions : IConfigureNamedOptions<CookieAuthenticationOptions>
 {

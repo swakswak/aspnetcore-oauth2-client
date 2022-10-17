@@ -1,4 +1,4 @@
-namespace OAuth2Client.Authentication.Jwt;
+namespace OAuth2Client.Security.Jwt;
 
 public class CustomJwtOptions
 {

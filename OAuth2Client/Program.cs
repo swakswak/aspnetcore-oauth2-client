@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.Extensions.Options;
-using OAuth2Client.Authentication;
-using OAuth2Client.Authentication.Cookie;
-using OAuth2Client.Authentication.Jwt;
-using OAuth2Client.Authentication.OAuth;
+using OAuth2Client.Security;
+using OAuth2Client.Security.Cookie;
+using OAuth2Client.Security.Jwt;
+using OAuth2Client.Security.OAuth;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<CustomOAuthClientOptions>(
