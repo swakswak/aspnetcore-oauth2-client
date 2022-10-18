@@ -53,7 +53,7 @@ public class KakaoOAuthOptions : IConfigureNamedOptions<OAuthOptions>
             context.Identity?.AddClaims(
                 new[]
                 {
-                    new Claim(ClaimTypes.Role, "User"),
+                    new Claim(ClaimTypes.Role, RoleName.User),
                     new Claim(JwtRegisteredClaimNames.Name, kakaoUser!.Properties.Nickname),
                     new Claim(JwtRegisteredClaimNames.Email, kakaoUser.KakaoAccount.Email!),
                     new Claim("profileImage", kakaoUser.Properties.ProfileImage)

@@ -21,7 +21,7 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "User")]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = RoleName.User)]
     public IEnumerable<WeatherForecast> Get()
     {
         _logger.LogInformation("[Get]");

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.Extensions.Options;
+using OAuth2Client;
 using OAuth2Client.Security;
 using OAuth2Client.Security.Cookie;
 using OAuth2Client.Security.Jwt;
@@ -33,7 +34,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options => options.DefaultPolicy = new AuthorizationPolicy(
     new[]
     {
-        new RolesAuthorizationRequirement(new[] { "User" })
+        new RolesAuthorizationRequirement(new[] { RoleName.User })
     },
     new[]
     {

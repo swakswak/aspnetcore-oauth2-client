@@ -1,36 +1,41 @@
 import React, {Component} from 'react';
 
-async function verifyAuth() {
-    fetch("auth/verification")
-        .then(res => {
-            if (res.status === 401) {
-                window.location.href = "auth/challenge";
-            }
-        })
-}
-
 export class Home extends Component {
     static displayName = Home.name;
 
     constructor() {
         super();
-        verifyAuth();
         this.state = {
-            nickname: ""
+            nickname: "",
+            isAuthenticated: false
         }
+        fetch("users/me")
+            .then(async res => {
+                switch (res.status) {
+                    case 200:
+                        this.state.isAuthenticated = true;
+                        const data = await res.json();
+                        this.setState({nickname: data.nickname})
+                        break;
+                        
+                    case 401:
+                        this.state.isAuthenticated = false;
+                        break;
+                }
+            });
     }
 
     async componentDidMount() {
-        let response = await fetch("users/me");
-        const data = await response.json();
-        this.setState({nickname: data.nickname})
+        // let response = await fetch("users/me");
+        // const data = await response.json();
+        // this.setState({nickname: data.nickname})
     }
 
     render() {
         return (
             <div>
-                <h4>{this.state.nickname} 님, 안녕하세요!</h4>
-                <a href={"https://localhost:8080/auth/logout"}>Logout</a>
+                <h4>{this.state.isAuthenticated ? this.state.nickname + " 님, 안녕하세요!?" : "로그인이 필요합니다."}</h4>
+                <a href={this.state.isAuthenticated ? "https://localhost:8080/auth/logout" : "https://localhost:8080/auth/challenge"}>{this.state.isAuthenticated ? "로그아웃" : "카카오 로그인"}</a>
             </div>
         );
     }

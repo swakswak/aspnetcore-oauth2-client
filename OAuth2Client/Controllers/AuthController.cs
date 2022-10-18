@@ -11,24 +11,19 @@ namespace OAuth2Client.Controllers;
 [Route("auth")]
 public class AuthController : ControllerBase
 {
-    public AuthController(ILogger<AuthController> logger)
-    {
-        Logger = logger;
-    }
+    public AuthController(ILogger<AuthController> logger) => Logger = logger;
 
     private ILogger Logger { get; }
 
-    [HttpGet]
-    [Route("challenge")]
+    [HttpGet("challenge")]
     public async Task ChallengeAsync()
     {
         Logger.LogInformation("[ChallengeAsync]");
         await HttpContext.ChallengeAsync(KakaoOAuthDefaults.AuthenticationScheme);
     }
 
-    [HttpGet]
-    [Route("logout")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "User")]
+    [HttpGet("logout")]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = RoleName.User)]
     public async Task Logout()
     {
         await HttpContext.SignOutAsync();
@@ -36,7 +31,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("verification")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "User")]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = RoleName.User)]
     public void Verification()
     {
         Logger.LogInformation("[Verification] verified.");
