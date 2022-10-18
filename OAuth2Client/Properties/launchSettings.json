@@ -11,6 +11,7 @@
     "OAuth2Client": {
       "commandName": "Project",
       "applicationUrl": "https://localhost:7276;http://localhost:5101",
+      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "local",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
