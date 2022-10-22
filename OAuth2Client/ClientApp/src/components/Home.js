@@ -3,12 +3,13 @@ import React, {Component} from 'react';
 export class Home extends Component {
     static displayName = Home.name;
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             nickname: "",
             isAuthenticated: false
         }
+
         fetch("users/me")
             .then(async res => {
                 switch (res.status) {
@@ -17,20 +18,14 @@ export class Home extends Component {
                         const data = await res.json();
                         this.setState({nickname: data.nickname})
                         break;
-                        
+
                     case 401:
                         this.state.isAuthenticated = false;
                         break;
                 }
             });
     }
-
-    async componentDidMount() {
-        // let response = await fetch("users/me");
-        // const data = await response.json();
-        // this.setState({nickname: data.nickname})
-    }
-
+    
     render() {
         return (
             <div>
