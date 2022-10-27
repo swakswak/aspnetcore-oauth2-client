@@ -7,20 +7,23 @@ using Microsoft.Extensions.Options;
 using OAuth2Client;
 using OAuth2Client.Security;
 using OAuth2Client.Security.Cookie;
+using OAuth2Client.Security.Cryptography;
 using OAuth2Client.Security.Jwt;
 using OAuth2Client.Security.OAuth;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<CustomOAuthClientOptions>(
     KakaoOAuthDefaults.AuthenticationScheme,
-    builder.Configuration.GetSection("OAuth:Kakao")
+    builder.Configuration.GetRequiredSection("OAuth:Kakao")
 );
-builder.Services.Configure<CustomJwtOptions>(builder.Configuration.GetSection("Jwt"));
+builder.Services.Configure<CustomJwtOptions>(builder.Configuration.GetRequiredSection("Jwt"));
+builder.Services.Configure<AesOptions>(builder.Configuration.GetRequiredSection("Aes"));
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<IConfigureOptions<OAuthOptions>, KakaoOAuthOptions>();
-builder.Services.AddTransient<IConfigureOptions<CookieAuthenticationOptions>, CustomCookieAuthOptions>();
+builder.Services.AddSingleton<IConfigureOptions<OAuthOptions>, KakaoOAuthOptions>();
+builder.Services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, CustomCookieAuthOptions>();
 builder.Services.AddTransient<ISecureDataFormat<AuthenticationTicket>, CustomTicketDataFormat>();
+builder.Services.AddTransient<ISecureDataFormat<AuthenticationProperties>, CustomOAuthStateDataFormat>();
 builder.Services.AddTransient<ITokenProvider, JwtTokenProvider>();
 
 builder.Services.AddAuthentication(options =>

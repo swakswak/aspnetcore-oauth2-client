@@ -17,6 +17,16 @@
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       }
     },
+    "OAuth2Client-MacOS": {
+      "commandName": "Project",
+      "applicationUrl": "https://localhost:7276;http://localhost:5101",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "local",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "DYLD_LIBRARY_PATH": "/opt/homebrew/opt/openssl@1.1/lib"
+      }
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,

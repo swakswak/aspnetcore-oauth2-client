@@ -11,14 +11,14 @@ namespace OAuth2Client.Security.OAuth;
 
 public class KakaoOAuthOptions : IConfigureNamedOptions<OAuthOptions>
 {
-    public KakaoOAuthOptions(IOptionsSnapshot<CustomOAuthClientOptions> oAuthClientOptionsSnapshot, CustomOAuthStateDataFormat stateDataFormat)
+    public KakaoOAuthOptions(IOptionsSnapshot<CustomOAuthClientOptions> oAuthClientOptionsSnapshot, ISecureDataFormat<AuthenticationProperties> stateDataFormat)
     {
         KakaoOAuthClientOptions = oAuthClientOptionsSnapshot.Get(KakaoOAuthDefaults.AuthenticationScheme);
         CustomOAuthStateDataFormat = stateDataFormat;
     }
 
     private CustomOAuthClientOptions KakaoOAuthClientOptions { get; }
-    private CustomOAuthStateDataFormat CustomOAuthStateDataFormat { get; }
+    private ISecureDataFormat<AuthenticationProperties> CustomOAuthStateDataFormat { get; }
 
     public void Configure(OAuthOptions options)
     {

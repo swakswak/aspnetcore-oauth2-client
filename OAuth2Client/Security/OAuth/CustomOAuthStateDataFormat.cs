@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
-using OAuth2Client.Security.Aes;
+using OAuth2Client.Security.Cryptography;
 
 namespace OAuth2Client.Security.OAuth;
 
@@ -22,18 +22,18 @@ public class CustomOAuthStateDataFormat : ISecureDataFormat<AuthenticationProper
     public string Protect(AuthenticationProperties data, string? purpose)
     {
         var plainText = JsonSerializer.SerializeToUtf8Bytes(data);
-
+        
         using var aes = new AesGcm(PasswordBytes);
-
+        
         var tag = new byte[AesGcm.TagByteSizes.MaxSize];
         var nonce = new byte[AesGcm.NonceByteSizes.MaxSize];
         var cipherText = new byte[plainText.Length];
-
+        
         aes.Encrypt(nonce, plainText, cipherText, tag);
-
+        
         var encrypted = new EncryptedAesGcm(nonce, cipherText, tag);
         var serialized = JsonSerializer.SerializeToUtf8Bytes(encrypted);
-
+        
         return Convert.ToBase64String(serialized);
     }
 

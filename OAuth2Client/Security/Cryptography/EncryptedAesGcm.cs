@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace OAuth2Client.Security.Aes;
+namespace OAuth2Client.Security.Cryptography;
 
 public record EncryptedAesGcm
 (
