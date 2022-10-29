@@ -1,4 +1,4 @@
-namespace OAuth2Client.Security.OAuth;
+namespace OAuth2Client.Security.OAuth.Kakao;
 
 public class KakaoOAuthDefaults : OAuthDefaultsBase
 {

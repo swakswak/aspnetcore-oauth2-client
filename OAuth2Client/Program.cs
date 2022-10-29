@@ -10,12 +10,14 @@ using OAuth2Client.Security.Cookie;
 using OAuth2Client.Security.Cryptography;
 using OAuth2Client.Security.Jwt;
 using OAuth2Client.Security.OAuth;
+using OAuth2Client.Security.OAuth.Kakao;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<CustomOAuthClientOptions>(
     KakaoOAuthDefaults.AuthenticationScheme,
     builder.Configuration.GetRequiredSection("OAuth:Kakao")
 );
+
 builder.Services.Configure<CustomJwtOptions>(builder.Configuration.GetRequiredSection("Jwt"));
 builder.Services.Configure<AesOptions>(builder.Configuration.GetRequiredSection("Aes"));
 

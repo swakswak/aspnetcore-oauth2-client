@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Options;
 
-namespace OAuth2Client.Security.OAuth;
+namespace OAuth2Client.Security.OAuth.Kakao;
 
 public class KakaoOAuthOptions : IConfigureNamedOptions<OAuthOptions>
 {
-    public KakaoOAuthOptions(IOptionsSnapshot<CustomOAuthClientOptions> oAuthClientOptionsSnapshot, ISecureDataFormat<AuthenticationProperties> stateDataFormat)
+    public KakaoOAuthOptions(IOptionsSnapshot<CustomOAuthClientOptions> oAuthClientOptionsSnapshot,
+        ISecureDataFormat<AuthenticationProperties> stateDataFormat)
     {
         KakaoOAuthClientOptions = oAuthClientOptionsSnapshot.Get(KakaoOAuthDefaults.AuthenticationScheme);
         CustomOAuthStateDataFormat = stateDataFormat;

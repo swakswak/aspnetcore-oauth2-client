@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using OAuth2Client.Security.OAuth;
+using OAuth2Client.Security.OAuth.Kakao;
 
 namespace OAuth2Client.Controllers;
 
