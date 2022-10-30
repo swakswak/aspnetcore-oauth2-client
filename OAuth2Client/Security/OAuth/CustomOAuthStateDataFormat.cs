@@ -4,52 +4,30 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using OAuth2Client.Security.Cryptography;
+using OAuth2Client.Security.Cryptography.AesGcm;
 
 namespace OAuth2Client.Security.OAuth;
 
 public class CustomOAuthStateDataFormat : ISecureDataFormat<AuthenticationProperties>
 {
-    public CustomOAuthStateDataFormat(IOptions<AesOptions> wrappedAesOptions)
+    public CustomOAuthStateDataFormat(IOptions<AesOptions> wrappedAesOptions, IEncryptionManagerHolder encryptionManagerHolder)
     {
         var aesOptions = wrappedAesOptions.Value;
-        PasswordBytes = Encoding.UTF8.GetBytes(aesOptions.Password);
+        Password = aesOptions.Password;
+        EncryptionManager = encryptionManagerHolder.Get(EncryptionManagerType.AesGcm);
     }
 
-    private byte[] PasswordBytes { get; }
+    private string Password { get; }
+
+    private IEncryptionManager EncryptionManager { get; }
 
     public string Protect(AuthenticationProperties data) => Protect(data, null);
 
-    public string Protect(AuthenticationProperties data, string? purpose)
-    {
-        var plainText = JsonSerializer.SerializeToUtf8Bytes(data);
-        
-        using var aes = new AesGcm(PasswordBytes);
-        
-        var tag = new byte[AesGcm.TagByteSizes.MaxSize];
-        var nonce = new byte[AesGcm.NonceByteSizes.MaxSize];
-        var cipherText = new byte[plainText.Length];
-        
-        aes.Encrypt(nonce, plainText, cipherText, tag);
-        
-        var encrypted = new EncryptedAesGcm(nonce, cipherText, tag);
-        var serialized = JsonSerializer.SerializeToUtf8Bytes(encrypted);
-        
-        return Convert.ToBase64String(serialized);
-    }
+    public string Protect(AuthenticationProperties data, string? purpose) => 
+        EncryptionManager.Encrypt(data, Password);
 
     public AuthenticationProperties? Unprotect(string? protectedText) => Unprotect(protectedText, null);
 
-    public AuthenticationProperties? Unprotect(string? protectedText, string? purpose)
-    {
-        if (protectedText is null) return null;
-
-        var protectedBytes = Convert.FromBase64String(protectedText);
-        var encrypted = JsonSerializer.Deserialize<EncryptedAesGcm>(protectedBytes);
-
-        if (encrypted is null) return null;
-
-        var plainTextBytes = encrypted.Decrypt(PasswordBytes);
-
-        return JsonSerializer.Deserialize<AuthenticationProperties>(plainTextBytes);
-    }
+    public AuthenticationProperties? Unprotect(string? protectedText, string? purpose) => 
+        protectedText is null ? null : EncryptionManager.Decrypt<AuthenticationProperties>(protectedText, Password);
 }

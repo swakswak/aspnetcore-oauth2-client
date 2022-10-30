@@ -1,7 +1,7 @@
 namespace OAuth2Client.Security;
 
-public interface IEncryptionManager<T, TData>
+public interface IEncryptionManager
 {
-    T Encrypt(TData value, byte[] passwordBytes);
-    TData Decrypt(T encrypted, byte[] passwordBytes);
+    string Encrypt(object value, string password);
+    T? Decrypt<T>(string encrypted, string password) where T : class;
 }

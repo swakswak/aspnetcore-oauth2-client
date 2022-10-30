@@ -8,25 +8,35 @@ using OAuth2Client;
 using OAuth2Client.Security;
 using OAuth2Client.Security.Cookie;
 using OAuth2Client.Security.Cryptography;
+using OAuth2Client.Security.Cryptography.Aes256;
+using OAuth2Client.Security.Cryptography.AesGcm;
 using OAuth2Client.Security.Jwt;
 using OAuth2Client.Security.OAuth;
 using OAuth2Client.Security.OAuth.Kakao;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.Configure<CustomOAuthClientOptions>(
-    KakaoOAuthDefaults.AuthenticationScheme,
-    builder.Configuration.GetRequiredSection("OAuth:Kakao")
-);
 
-builder.Services.Configure<CustomJwtOptions>(builder.Configuration.GetRequiredSection("Jwt"));
-builder.Services.Configure<AesOptions>(builder.Configuration.GetRequiredSection("Aes"));
+builder.Services.Configure<CustomJwtOptions>(builder.Configuration.GetRequiredSection("Jwt"))
+    .Configure<AesOptions>(builder.Configuration.GetRequiredSection("Aes"))
+    .Configure<CustomOAuthClientOptions>(
+        KakaoOAuthDefaults.AuthenticationScheme,
+        builder.Configuration.GetRequiredSection("OAuth:Kakao")
+    );
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<IConfigureOptions<OAuthOptions>, KakaoOAuthOptions>();
-builder.Services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, CustomCookieAuthOptions>();
-builder.Services.AddTransient<ISecureDataFormat<AuthenticationTicket>, CustomTicketDataFormat>();
-builder.Services.AddTransient<ISecureDataFormat<AuthenticationProperties>, CustomOAuthStateDataFormat>();
-builder.Services.AddTransient<ITokenProvider, JwtTokenProvider>();
+
+builder.Services.AddSingleton<IConfigureOptions<OAuthOptions>, KakaoOAuthOptions>()
+    .AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, CustomCookieAuthOptions>()
+    .AddSingleton<ISecureDataFormat<AuthenticationTicket>, CustomTicketDataFormat>()
+    .AddSingleton<ISecureDataFormat<AuthenticationProperties>, CustomOAuthStateDataFormat>()
+    .AddSingleton<ITokenProvider, JwtTokenProvider>()
+    .AddSingleton<IEncryptionManager, AesGcmEncryptionManager>()
+    .AddSingleton<IEncryptionManager, AesEncryptionManager>()
+    .AddSingleton<IEncryptionManagerHolder, EncryptionManagerHolder>(sp =>
+        EncryptionManagerHolder.Builder()
+            .EncryptionManager(EncryptionManagerType.Aes, sp.GetRequiredService<AesGcmEncryptionManager>())
+            .EncryptionManager(EncryptionManagerType.AesGcm, sp.GetRequiredService<AesEncryptionManager>())
+            .Build());
 
 builder.Services.AddAuthentication(options =>
     {
@@ -53,12 +63,12 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
     app.UseHsts();
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseEndpoints(routeBuilder => routeBuilder.MapControllers());
+app.UseHttpsRedirection()
+    .UseStaticFiles()
+    .UseRouting()
+    .UseAuthentication()
+    .UseAuthorization()
+    .UseEndpoints(routeBuilder => routeBuilder.MapControllers());
 
 app.MapControllerRoute(
     "default",
