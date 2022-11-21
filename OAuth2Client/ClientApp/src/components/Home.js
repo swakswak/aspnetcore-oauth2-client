@@ -28,7 +28,7 @@ export class Home extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{textAlign: "center", paddingTop: "50px"}}>
                 <h4>
                     {this.state.isAuthenticated ? this.state.nickname + " 님, 안녕하세요!?" : "로그인이 필요합니다."}
                 </h4>

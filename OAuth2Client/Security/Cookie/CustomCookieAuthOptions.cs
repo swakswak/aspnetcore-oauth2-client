@@ -26,6 +26,8 @@ public class CustomCookieAuthOptions : IConfigureNamedOptions<CookieAuthenticati
         options.TicketDataFormat = TicketDataFormat;
         options.Cookie.MaxAge = TimeSpan.FromMinutes(JwtOptions.ExpirationMinutes);
         options.Cookie.Name = JwtOptions.TokenName;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.HttpOnly = true;
 
         options.Events.OnRedirectToAccessDenied = context =>
         {
