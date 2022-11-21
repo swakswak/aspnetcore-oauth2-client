@@ -25,12 +25,22 @@ export class Home extends Component {
                 }
             });
     }
-    
+
     render() {
         return (
             <div>
-                <h4>{this.state.isAuthenticated ? this.state.nickname + " 님, 안녕하세요!?" : "로그인이 필요합니다."}</h4>
-                <a href={this.state.isAuthenticated ? "https://localhost:8080/auth/logout" : "https://localhost:8080/auth/challenge"}>{this.state.isAuthenticated ? "로그아웃" : "카카오 로그인"}</a>
+                <h4>
+                    {this.state.isAuthenticated ? this.state.nickname + " 님, 안녕하세요!?" : "로그인이 필요합니다."}
+                </h4>
+                <a
+                    href={
+                        this.state.isAuthenticated
+                            ? "https://localhost:8080/auth/logout"
+                            : "https://localhost:8080/auth/challenge"
+                    }
+                >
+                    {this.state.isAuthenticated ? "로그아웃" : "카카오 로그인"}
+                </a>
             </div>
         );
     }

@@ -7,9 +7,6 @@ using Microsoft.Extensions.Options;
 using OAuth2Client;
 using OAuth2Client.Security;
 using OAuth2Client.Security.Cookie;
-using OAuth2Client.Security.Cryptography;
-using OAuth2Client.Security.Cryptography.Aes256;
-using OAuth2Client.Security.Cryptography.AesGcm;
 using OAuth2Client.Security.Jwt;
 using OAuth2Client.Security.OAuth;
 using OAuth2Client.Security.OAuth.Kakao;
@@ -17,7 +14,6 @@ using OAuth2Client.Security.OAuth.Kakao;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<CustomJwtOptions>(builder.Configuration.GetRequiredSection("Jwt"))
-    .Configure<AesOptions>(builder.Configuration.GetRequiredSection("Aes"))
     .Configure<CustomOAuthClientOptions>(
         KakaoOAuthDefaults.AuthenticationScheme,
         builder.Configuration.GetRequiredSection("OAuth:Kakao")
@@ -28,15 +24,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IConfigureOptions<OAuthOptions>, KakaoOAuthOptions>()
     .AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, CustomCookieAuthOptions>()
     .AddSingleton<ISecureDataFormat<AuthenticationTicket>, CustomTicketDataFormat>()
-    .AddSingleton<ISecureDataFormat<AuthenticationProperties>, CustomOAuthStateDataFormat>()
-    .AddSingleton<ITokenProvider, JwtTokenProvider>()
-    .AddSingleton<IEncryptionManager, AesGcmEncryptionManager>()
-    .AddSingleton<IEncryptionManager, AesEncryptionManager>()
-    .AddSingleton<IEncryptionManagerHolder, EncryptionManagerHolder>(sp =>
-        EncryptionManagerHolder.Builder()
-            .EncryptionManager(EncryptionManagerType.Aes, sp.GetRequiredService<AesGcmEncryptionManager>())
-            .EncryptionManager(EncryptionManagerType.AesGcm, sp.GetRequiredService<AesEncryptionManager>())
-            .Build());
+    .AddSingleton<ITokenProvider, JwtTokenProvider>();
 
 builder.Services.AddAuthentication(options =>
     {

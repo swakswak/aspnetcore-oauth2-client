@@ -11,15 +11,12 @@ namespace OAuth2Client.Security.OAuth.Kakao;
 
 public class KakaoOAuthOptions : IConfigureNamedOptions<OAuthOptions>
 {
-    public KakaoOAuthOptions(IOptionsSnapshot<CustomOAuthClientOptions> oAuthClientOptionsSnapshot,
-        ISecureDataFormat<AuthenticationProperties> stateDataFormat)
+    public KakaoOAuthOptions(IOptionsSnapshot<CustomOAuthClientOptions> oAuthClientOptionsSnapshot)
     {
         KakaoOAuthClientOptions = oAuthClientOptionsSnapshot.Get(KakaoOAuthDefaults.AuthenticationScheme);
-        CustomOAuthStateDataFormat = stateDataFormat;
     }
 
     private CustomOAuthClientOptions KakaoOAuthClientOptions { get; }
-    private ISecureDataFormat<AuthenticationProperties> CustomOAuthStateDataFormat { get; }
 
     public void Configure(OAuthOptions options)
     {
@@ -40,7 +37,6 @@ public class KakaoOAuthOptions : IConfigureNamedOptions<OAuthOptions>
             options.ClaimActions.MapJsonKey(scope, scope));
         options.CorrelationCookie.SameSite = SameSiteMode.None;
         options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.StateDataFormat = CustomOAuthStateDataFormat;
 
         options.Events.OnCreatingTicket = async context =>
         {
