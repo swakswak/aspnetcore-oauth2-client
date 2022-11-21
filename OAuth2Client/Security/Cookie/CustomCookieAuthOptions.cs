@@ -28,6 +28,7 @@ public class CustomCookieAuthOptions : IConfigureNamedOptions<CookieAuthenticati
         options.Cookie.Name = JwtOptions.TokenName;
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.Strict;
 
         options.Events.OnRedirectToAccessDenied = context =>
         {

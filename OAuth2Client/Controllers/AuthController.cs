@@ -30,11 +30,4 @@ public class AuthController : ControllerBase
         await HttpContext.SignOutAsync();
         HttpContext.Response.Redirect(Url.Content("~/"));
     }
-
-    [HttpGet("verification")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = RoleName.User)]
-    public void Verification()
-    {
-        Logger.LogInformation("[Verification] verified.");
-    }
 }
