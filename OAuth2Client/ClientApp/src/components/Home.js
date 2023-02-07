@@ -7,7 +7,9 @@ export class Home extends Component {
         super(props);
         this.state = {
             nickname: "",
-            isAuthenticated: false
+            isAuthenticated: false,
+            isAuthorized: false,
+            color: null
         }
 
         fetch("users/me")
@@ -24,12 +26,18 @@ export class Home extends Component {
                         break;
                 }
             });
+        
+        fetch("resources")
+            .then(async res => {
+                const data = await res.json();
+                this.setState({color: data.color})
+            })
     }
 
     render() {
         return (
             <div style={{textAlign: "center", paddingTop: "50px"}}>
-                <h4>
+                <h4 style={{color: this.state.color}}>
                     {this.state.isAuthenticated ? this.state.nickname + " 님, 안녕하세요!?" : "로그인이 필요합니다."}
                 </h4>
                 <a

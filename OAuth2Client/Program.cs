@@ -10,6 +10,7 @@ using OAuth2Client.Security.Cookie;
 using OAuth2Client.Security.Jwt;
 using OAuth2Client.Security.OAuth;
 using OAuth2Client.Security.OAuth.Kakao;
+using OAuth2Client.Security.Policy;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,17 +35,25 @@ builder.Services.AddAuthentication(options =>
     .AddCookie(delegate { })
     .AddOAuth(KakaoOAuthDefaults.AuthenticationScheme, _ => { });
 
-builder.Services.AddAuthorization(options => options.DefaultPolicy = new AuthorizationPolicy(
-    new[]
+builder.Services.AddAuthorization(options =>
+{
+    options.DefaultPolicy = new AuthorizationPolicy(
+        new[]
+        {
+            new RolesAuthorizationRequirement(new[] { RoleName.User })
+        },
+        new[]
+        {
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            KakaoOAuthDefaults.AuthenticationScheme
+        }
+    );
+    
+    options.AddPolicy(PolicyName.ResourcePolicy, policy =>
     {
-        new RolesAuthorizationRequirement(new[] { RoleName.User })
-    },
-    new[]
-    {
-        CookieAuthenticationDefaults.AuthenticationScheme,
-        KakaoOAuthDefaults.AuthenticationScheme
-    }
-));
+        policy.Requirements.Add(new ResourceAuthorizationHandler());
+    });
+});
 
 var app = builder.Build();
 

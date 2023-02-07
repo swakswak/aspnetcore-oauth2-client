@@ -54,6 +54,7 @@ public class KakaoOAuthOptions : IConfigureNamedOptions<OAuthOptions>
                 new[]
                 {
                     new Claim(ClaimTypes.Role, RoleName.User),
+                    new Claim("permission", DateTime.UtcNow.Millisecond % 2 == 1 ? "Resource:Blue" : "Resource:Green"),
                     new Claim(JwtRegisteredClaimNames.Name, kakaoUser!.Properties.Nickname),
                     new Claim(JwtRegisteredClaimNames.Email, kakaoUser.KakaoAccount.Email!),
                     new Claim("profileImage", kakaoUser.Properties.ProfileImage)
